@@ -440,7 +440,7 @@ export function LandingPageComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="md:w-1/2 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl sm:w-[100%] m-auto"
+                className="md:w-1/2 w-full bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl"
               >
                 <div className="mb-6">
                   <label
