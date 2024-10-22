@@ -4,11 +4,6 @@ type ResponseData = {
   message: string;
 };
 
-export async function GET(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  console.log(req.method, res);
-
+export async function GET() {
   return Response.json({ message: "Hello from Next.js!" });
 }
