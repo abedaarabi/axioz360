@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import data from "../../public/img/data .jpg";
-import dataone from "../../public/img/dataone.jpg";
 import {
   Menu,
   X,

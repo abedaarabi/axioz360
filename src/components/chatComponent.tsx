@@ -9,7 +9,6 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>(
