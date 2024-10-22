@@ -412,7 +412,7 @@ export function LandingPageComponent() {
                   </div>
                   <div className="flex items-center">
                     <MapPin className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span>123 Tech Street, Innovation City, 12345</span>
+                    <span>Copenhagen Denmark</span>
                   </div>
                 </div>
               </motion.div>
