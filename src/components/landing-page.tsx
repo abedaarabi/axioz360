@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 import data from "../../public/img/data .jpg";
 import {
@@ -29,6 +29,8 @@ export function LandingPageComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   useEffect(() => {
     setMounted(true);
@@ -60,7 +62,7 @@ export function LandingPageComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-black text-black dark:text-white font-sans transition-colors duration-300">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md transition-colors duration-300">
@@ -191,26 +193,30 @@ export function LandingPageComponent() {
         )}
       </AnimatePresence>
 
-      <main className="relative ">
-        <section className="min-h-screen flex flex-col justify-center items-center p-4 md:p-8 bg-blue-50">
+      <main className="relative">
+        <section className="min-h-screen flex flex-col justify-center items-center p-4 md:p-8 relative overflow-hidden">
+          <motion.div
+            style={{ opacity }}
+            className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
+          ></motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center"
+            className="text-center relative z-10"
           >
-            <h1 className="text-4xl md:text-7xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+            <h1 className="text-5xl md:text-8xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
               Data and Decision
               <br />
               Intelligence Solutions
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
+            <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto text-gray-700 dark:text-gray-300">
               Empowering businesses with cutting-edge applications and custom
               solutions using Autodesk APS and BIM technology.
             </p>
             <Link
               href={"login"}
-              className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors duration-300"
+              className="inline-flex items-center px-8 py-4 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Get Started
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -218,14 +224,14 @@ export function LandingPageComponent() {
           </motion.div>
         </section>
 
-        <section id="about" className="py-20">
+        <section id="about" className="py-20 bg-white dark:bg-gray-800">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-8 text-center"
+              className="text-4xl md:text-6xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
             >
               About Axioz360
             </motion.h2>
@@ -234,17 +240,14 @@ export function LandingPageComponent() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-xl md:text-2xl text-left mb-5 max-w-5xl mx-auto text-gray-600 dark:text-gray-400:"
+              className="text-xl md:text-2xl text-center mb-5 max-w-4xl mx-auto text-gray-700 dark:text-gray-300 leading-relaxed"
             >
               Axioz360 is a premier consulting firm specializing in Data and
               Decision Intelligence solutions. We empower organizations by
               harnessing the full potential of Autodesk APS and BIM technologies
               to deliver cutting-edge applications, seamless system
               integrations, and bespoke solutions that accelerate business
-              growth and innovation. Our expertise extends to enabling
-              businesses to integrate advanced AI capabilities within both
-              on-premise and cloud environments, driving digital transformation
-              and operational excellence.
+              growth and innovation.
             </motion.p>
           </div>
         </section>
@@ -256,7 +259,7 @@ export function LandingPageComponent() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-12 text-center"
+              className="text-4xl md:text-6xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
             >
               Our Services
             </motion.h2>
@@ -268,13 +271,13 @@ export function LandingPageComponent() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center"
+                  className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center text-center"
                 >
-                  <service.icon className="w-12 h-12 mb-4 text-blue-600 dark:text-blue-400" />
-                  <h3 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">
+                  <service.icon className="w-16 h-16 mb-6 text-blue-600 dark:text-blue-400" />
+                  <h3 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-700 dark:text-gray-300">
                     {service.description}
                   </p>
                 </motion.div>
@@ -283,7 +286,7 @@ export function LandingPageComponent() {
           </div>
         </section>
 
-        <section id="image-text" className="py-20">
+        <section id="image-text" className="py-20 bg-white dark:bg-gray-800">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <motion.div
@@ -298,7 +301,7 @@ export function LandingPageComponent() {
                   alt="Axioz360 Visualization"
                   width={600}
                   height={400}
-                  className="rounded-lg shadow-lg"
+                  className="rounded-2xl shadow-2xl"
                 />
               </motion.div>
               <motion.div
@@ -306,21 +309,21 @@ export function LandingPageComponent() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="md:w-1/2 md:pl-8"
+                className="md:w-1/2 md:pl-12"
               >
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
                   Innovative Solutions
                 </h2>
-                <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                   At Axioz360, we combine cutting-edge technology with industry
                   expertise to deliver innovative solutions that transform
                   businesses. Our approach to data and decision intelligence is
-                  designed to give you a competitive edge in today's fast-paced
+                  designed to give you a competitive edge in today&apos;s fast-paced
                   digital landscape.
                 </p>
                 <a
                   href="#contact"
-                  className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors duration-300"
+                  className="inline-flex items-center px-8 py-4 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Learn More
                   <ArrowRight className="ml-2 w-5 h-5" />
@@ -337,11 +340,11 @@ export function LandingPageComponent() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-12 text-center"
+              className="text-4xl md:text-6xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
             >
               Featured Projects
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               {[
                 {
                   title: "Smart Building Management",
@@ -360,17 +363,17 @@ export function LandingPageComponent() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                 >
-                  <h3 className="text-xl md:text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
                     {project.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
                     {project.description}
                   </p>
                   <a
                     href="#"
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors text-lg font-medium"
                   >
                     Learn more →
                   </a>
@@ -380,14 +383,14 @@ export function LandingPageComponent() {
           </div>
         </section>
 
-        <section id="contact" className="py-20">
+        <section id="contact" className="py-20 bg-white dark:bg-gray-800">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-12 text-center"
+              className="text-4xl md:text-6xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
             >
               Get in Touch
             </motion.h2>
@@ -397,21 +400,21 @@ export function LandingPageComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="md:w-1/2 mb-8 md:mb-0"
+                className="md:w-1/2 mb-12 md:mb-0"
               >
-                <h3 className="text-2xl font-bold mb-4">Contact Information</h3>
-                <div className="space-y-4">
+                <h3 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Contact Information</h3>
+                <div className="space-y-6">
                   <div className="flex items-center">
-                    <Mail className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span>info@axioz360.com</span>
+                    <Mail className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xl text-gray-700 dark:text-gray-300">info@axioz360.com</span>
                   </div>
                   <div className="flex items-center">
-                    <Phone className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
-                    {/* <span>+1 (555) 123-4567</span> */}
+                    <Phone className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xl text-gray-700 dark:text-gray-300">+1 (555) 123-4567</span>
                   </div>
                   <div className="flex items-center">
-                    <MapPin className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span>Copenhagen Denmark</span>
+                    <MapPin className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xl text-gray-700 dark:text-gray-300">Copenhagen, Denmark</span>
                   </div>
                 </div>
               </motion.div>
@@ -420,7 +423,7 @@ export function LandingPageComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="md:w-[80%] w-[80%] bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg m-auto"
+                className="md:w-1/2 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl"
               >
                 <div className="mb-6">
                   <label
@@ -466,7 +469,7 @@ export function LandingPageComponent() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                  className="w-full bg-blue-600 text-white px-8 py-4 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 text-lg font-medium shadow-lg hover:shadow-xl"
                 >
                   Send Message
                 </button>
@@ -476,29 +479,29 @@ export function LandingPageComponent() {
         </section>
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-900 py-8">
+      <footer className="bg-gray-100 dark:bg-gray-900 py-12">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4 md:mb-0">
+          <p className="text-gray-600 dark:text-gray-400 mb-4 md:mb-0 text-lg">
             &copy; 2024 Axioz360. All rights reserved.
           </p>
-          <div className="flex space-x-4">
+          <div className="flex space-x-6">
             <a
               href="#"
-              className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+              className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <Github className="w-6 h-6" />
+              <Github className="w-8 h-8" />
             </a>
             <a
               href="#"
-              className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+              className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <Twitter className="w-6 h-6" />
+              <Twitter className="w-8 h-8" />
             </a>
             <a
               href="#"
-              className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+              className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <Linkedin className="w-6 h-6" />
+              <Linkedin className="w-8 h-8" />
             </a>
           </div>
         </div>
