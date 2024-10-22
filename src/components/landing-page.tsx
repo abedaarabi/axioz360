@@ -408,7 +408,7 @@ export function LandingPageComponent() {
                   </div>
                   <div className="flex items-center">
                     <Phone className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span>+1 (555) 123-4567</span>
+                    {/* <span>+1 (555) 123-4567</span> */}
                   </div>
                   <div className="flex items-center">
                     <MapPin className="w-6 h-6 mr-4 text-blue-600 dark:text-blue-400" />
