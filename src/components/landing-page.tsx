@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
 import data from "../../public/img/data .jpg";
 import {
@@ -318,8 +323,8 @@ export function LandingPageComponent() {
                   At Axioz360, we combine cutting-edge technology with industry
                   expertise to deliver innovative solutions that transform
                   businesses. Our approach to data and decision intelligence is
-                  designed to give you a competitive edge in today&apos;s fast-paced
-                  digital landscape.
+                  designed to give you a competitive edge in today&apos;s
+                  fast-paced digital landscape.
                 </p>
                 <a
                   href="#contact"
@@ -402,19 +407,31 @@ export function LandingPageComponent() {
                 viewport={{ once: true }}
                 className="md:w-1/2 mb-12 md:mb-0"
               >
-                <h3 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Contact Information</h3>
+                <h3 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">
+                  Contact Information
+                </h3>
                 <div className="space-y-6">
                   <div className="flex items-center">
                     <Mail className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-xl text-gray-700 dark:text-gray-300">info@axioz360.com</span>
+                    <span className="text-xl text-gray-700 dark:text-gray-300">
+                      abedaarabi@gmail.com
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <Mail className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xl text-gray-700 dark:text-gray-300">
+                      dev.meliani@gmail.com
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <Phone className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-xl text-gray-700 dark:text-gray-300">+1 (555) 123-4567</span>
+                    <span className="text-xl text-gray-700 dark:text-gray-300"></span>
                   </div>
                   <div className="flex items-center">
                     <MapPin className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-xl text-gray-700 dark:text-gray-300">Copenhagen, Denmark</span>
+                    <span className="text-xl text-gray-700 dark:text-gray-300">
+                      Copenhagen, Denmark
+                    </span>
                   </div>
                 </div>
               </motion.div>
@@ -423,7 +440,7 @@ export function LandingPageComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="md:w-1/2 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl"
+                className="md:w-1/2 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl sm:w-[100%] m-auto"
               >
                 <div className="mb-6">
                   <label
