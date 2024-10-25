@@ -55,16 +55,16 @@ export default function Dynamic3DModelSection() {
             </div>
           </motion.div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-[10%] sm:flex-col-reverse">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-20 lg:mt-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="lg:w-1/2"
+            className="lg:w-1/2 w-full order-2 lg:order-1"
           >
             <iframe
-              className="w-full sm:w-full aspect-video self-stretch md:min-h-96 rounded-lg shadow-2xl "
+              className="w-full aspect-video rounded-lg shadow-2xl"
               src="https://www.youtube.com/embed/POwIkU2tC7E"
               frameBorder="0"
               title="Product Overview Video"
@@ -76,10 +76,10 @@ export default function Dynamic3DModelSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="lg:w-1/2"
+            className="lg:w-1/2 w-full order-1 lg:order-2 mb-8 lg:mb-0"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-              Evaluate CO₂ Emissions Impact in the Design Phase{" "}
+              Evaluate CO₂ Emissions Impact in the Design Phase
             </h2>
 
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
