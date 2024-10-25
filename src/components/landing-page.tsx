@@ -29,6 +29,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import Dynamic3DModelSection from "./iotSection";
 
 export function LandingPageComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -199,7 +200,7 @@ export function LandingPageComponent() {
       </AnimatePresence>
 
       <main className="relative">
-        <section className="min-h-screen flex flex-col justify-center items-center p-4 md:p-8 relative overflow-hidden">
+        <section className="min-h-svh flex flex-col justify-center items-center p-4 md:p-8 relative overflow-hidden">
           <motion.div
             style={{ opacity }}
             className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
@@ -256,7 +257,9 @@ export function LandingPageComponent() {
             </motion.p>
           </div>
         </section>
-
+        <section>
+          <Dynamic3DModelSection />
+        </section>
         <section id="services" className="py-20 bg-gray-100 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <motion.h2
@@ -423,10 +426,10 @@ export function LandingPageComponent() {
                       dev.meliani@gmail.com
                     </span>
                   </div>
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
                     <Phone className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xl text-gray-700 dark:text-gray-300"></span>
-                  </div>
+                  </div> */}
                   <div className="flex items-center">
                     <MapPin className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xl text-gray-700 dark:text-gray-300">
@@ -502,20 +505,20 @@ export function LandingPageComponent() {
             &copy; 2024 Axioz360. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <a
+            {/* <a
               href="#"
               className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               <Github className="w-8 h-8" />
-            </a>
+            </a> */}
             <a
               href="#"
               className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <Twitter className="w-8 h-8" />
+              <X className="w-8 h-8" />
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/in/abedaarabi/"
               className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               <Linkedin className="w-8 h-8" />
