@@ -4,18 +4,50 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import iotimg from "../../public/img/iot-img.png";
+import { useEffect, useRef } from "react";
 
 export default function Dynamic3DModelSection() {
+  const videoRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && videoRef.current) {
+          const iframe = videoRef.current;
+          const src = iframe.src;
+          iframe.src = `${src}&autoplay=1&mute=1`;
+          observer.unobserve(iframe);
+        }
+      });
+    }, options);
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section className="py-20 bg-white dark:bg-black">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+        <div className="flex flex-col items-center justify-between gap-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="lg:w-1/2"
+            className="w-full lg:w-2/3 text-center"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
               Dynamic 3D Model Integration
@@ -42,7 +74,7 @@ export default function Dynamic3DModelSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="lg:w-1/2"
+            className="w-full lg:w-2/3"
           >
             <div className="relative rounded-lg overflow-hidden shadow-2xl">
               <Image
@@ -55,28 +87,13 @@ export default function Dynamic3DModelSection() {
             </div>
           </motion.div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-20 lg:mt-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="lg:w-1/2 w-full order-2 lg:order-1"
-          >
-            <iframe
-              className="w-full aspect-video rounded-lg shadow-2xl"
-              src="https://www.youtube.com/embed/POwIkU2tC7E"
-              frameBorder="0"
-              title="Product Overview Video"
-              aria-hidden="true"
-            />
-          </motion.div>
+        <div className="flex flex-col items-center justify-between gap-12 mt-20 lg:mt-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="lg:w-1/2 w-full order-1 lg:order-2 mb-8 lg:mb-0"
+            className="w-full lg:w-2/3 text-center mb-8"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
               Evaluate CO₂ Emissions Impact in the Design Phase
@@ -98,28 +115,23 @@ export default function Dynamic3DModelSection() {
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="w-full lg:w-2/3"
+          >
+            <iframe
+              ref={videoRef}
+              className="w-full aspect-video rounded-lg shadow-2xl"
+              src="https://www.youtube.com/embed/POwIkU2tC7E"
+              frameBorder="0"
+              title="Product Overview Video"
+              allow="autoplay; encrypted-media"
+            />
+          </motion.div>
         </div>
-
-        {/* <div className="sm:w-[80%] mt-12 m-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Evaluate CO₂ Emissions Impact in the Design Phase
-          </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-            Leverage BIM and 3D modeling to assess the environmental impact of
-            design choices from the start. By integrating real-time CO₂
-            emissions data, you can make informed adjustments that enhance
-            sustainability, reduce waste, and optimize material usage—ultimately
-            creating designs that are efficient, eco-friendly, and future-ready.
-          </p>
-
-          <iframe
-            className="w-full aspect-video self-stretch md:min-h-96 rounded-lg shadow-md"
-            src="https://www.youtube.com/embed/POwIkU2tC7E"
-            frameBorder="0"
-            title="Product Overview Video"
-            aria-hidden="true"
-          />
-        </div> */}
       </div>
     </section>
   );

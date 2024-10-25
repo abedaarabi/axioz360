@@ -319,10 +319,10 @@ export function LandingPageComponent() {
                 viewport={{ once: true }}
                 className="md:w-1/2 md:pl-12"
               >
-                <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                <h2 className="text-3xl text-center md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
                   Innovative Solutions
                 </h2>
-                <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
                   At Axioz360, we combine cutting-edge technology with industry
                   expertise to deliver innovative solutions that transform
                   businesses. Our approach to data and decision intelligence is
@@ -341,7 +341,10 @@ export function LandingPageComponent() {
           </div>
         </section>
 
-        <section id="projects" className="py-20 bg-gray-100 dark:bg-gray-900">
+        <section
+          id="projects"
+          className="py-20 bg-gray-100 dark:bg-gray-900 text-center"
+        >
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -402,7 +405,7 @@ export function LandingPageComponent() {
             >
               Get in Touch
             </motion.h2>
-            <div className="flex flex-col md:flex-row justify-between items-start max-w-6xl mx-auto">
+            <div className="flex  flex-col md:flex-row justify-between items-start max-w-6xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -413,7 +416,7 @@ export function LandingPageComponent() {
                 <h3 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">
                   Contact Information
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-6 ">
                   <div className="flex items-center">
                     <Mail className="w-8 h-8 mr-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xl text-gray-700 dark:text-gray-300">
