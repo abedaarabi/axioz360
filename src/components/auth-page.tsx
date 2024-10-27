@@ -19,7 +19,7 @@ export function AuthPageComponent() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans transition-colors duration-300 flex flex-col justify-center items-center p-4">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <div className="absolute inset-0 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
       <div className="z-10 w-full max-w-md">
         <div className="flex justify-between items-center mb-8">

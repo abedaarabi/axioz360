@@ -69,7 +69,7 @@ export function LandingPageComponent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-black text-black dark:text-white font-sans transition-colors duration-300">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <div className="absolute inset-0  bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md transition-colors duration-300">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -203,7 +203,7 @@ export function LandingPageComponent() {
         <section className="min-h-svh flex flex-col justify-center items-center p-4 md:p-8 relative overflow-hidden">
           <motion.div
             style={{ opacity }}
-            className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
+            className="absolute inset-0 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
           ></motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
