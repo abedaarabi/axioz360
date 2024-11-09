@@ -4,8 +4,10 @@ export function getLocalStorage(key: string, defaultValue: any) {
   const stickyValue = localStorage.getItem(key);
 
   if (stickyValue !== null && stickyValue !== "undefined") {
+    console.log(stickyValue);
+
     try {
-      return JSON.parse(stickyValue);
+      return stickyValue;
     } catch (error) {
       console.error("Error parsing localStorage value", error);
       return defaultValue;

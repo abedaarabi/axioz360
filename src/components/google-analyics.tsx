@@ -31,6 +31,7 @@ export default function GoogleAnalytics({
   useEffect(() => {
     // Construct the full URL including search params
     const url = pathname + (searchParams ? searchParams.toString() : "");
+    console.log(url);
 
     // Send pageview event to Google Analytics
     if (typeof window !== "undefined" && window.gtag) {
