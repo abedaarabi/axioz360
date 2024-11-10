@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 
 import data from "../../public/img/data .jpg";
+import ai from "../../public/img/ai-img.png";
 import {
   Menu,
   X,
@@ -257,6 +258,75 @@ export function LandingPageComponent() {
             </motion.p>
           </div>
         </section>
+
+        <section className="py-20 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="md:w-1/2 relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl transform rotate-3 opacity-20"></div>
+                <Image
+                  src={ai}
+                  alt="Advanced Analytics"
+                  width={600}
+                  height={400}
+                  className="rounded-3xl shadow-2xl relative z-10"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="md:w-1/2 space-y-6"
+              >
+                <h3 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                  Advanced AI Solutions
+                </h3>
+                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Experience the power of our advanced AI Solutions that run locally to
+                  transforms complex data into actionable insights. Our
+                  AI-driven solutions help businesses make informed decisions
+                  and stay ahead of the competition.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      Real-time data processing and analysis
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      AI-powered predictive analytics
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      Custom reporting and dashboards
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/pages/chat"
+                  className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  Read More
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         <section>
           <Dynamic3DModelSection />
         </section>
