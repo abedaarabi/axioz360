@@ -221,7 +221,7 @@ export function LandingPageComponent() {
               solutions using Autodesk APS and BIM technology.
             </p>
             <Link
-              href={"login"}
+              href={"pages/login"}
               className="inline-flex items-center px-8 py-4 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Get Started
