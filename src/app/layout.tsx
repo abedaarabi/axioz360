@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import GoogleAnalytics from "@/components/google-analyics";
-import CookieBanner from "@/components/cookie-banner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,8 +36,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <GoogleAnalytics GA_TRACKING_ID={process.env.NEXT_PUBLIC_GA_ID!} />
-          <CookieBanner />
+          {/* <GoogleAnalytics GA_TRACKING_ID={process.env.NEXT_PUBLIC_GA_ID!} /> */}
+          {/* <CookieBanner /> */}
         </ThemeProvider>
       </body>
     </html>

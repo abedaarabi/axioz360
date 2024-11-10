@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { Suspense } from 'react';
 import { LandingPageComponent } from "@/components/landing-page";
 
 function HomePageContent() {
@@ -8,9 +7,5 @@ function HomePageContent() {
 }
 
 export default function HomePage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomePageContent />
-    </Suspense>
-  );
+  return <HomePageContent />;
 }
