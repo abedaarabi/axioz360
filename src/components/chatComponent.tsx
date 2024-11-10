@@ -9,6 +9,7 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { log } from "console";
 
 interface ChatMessage {
   text: string;
@@ -133,7 +134,7 @@ export default function ChatComponent() {
   const handleSend = async () => {
     const trimmedInput = input.trim();
     if (!trimmedInput || isLoading) return;
-
+    console.log("first");
     setIsLoading(true);
     const userMessage: ChatMessage = { text: trimmedInput, isUser: true };
     const updatedMessages = [...messages, userMessage];
@@ -248,7 +249,6 @@ export default function ChatComponent() {
                     const match = /language-(\w+)/.exec(className || "");
                     return match ? (
                       <div className="relative group">
-                        
                         <SyntaxHighlighter
                           language={match[1]}
                           showLineNumbers
