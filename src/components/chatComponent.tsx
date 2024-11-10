@@ -248,8 +248,8 @@ export default function ChatComponent() {
                     const match = /language-(\w+)/.exec(className || "");
                     return match ? (
                       <div className="relative group">
+                        
                         <SyntaxHighlighter
-                          {...props}
                           language={match[1]}
                           showLineNumbers
                           className="!mt-2 !mb-2 rounded-lg"
