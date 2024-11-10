@@ -1,7 +1,7 @@
 // app/api/generate/route.ts
 import { NextRequest } from "next/server";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 async function improvePrompt(originalPrompt: string): Promise<string> {
   const improvementPrompt = `As an AI assistant, analyze and improve the following prompt to get better responses. Add necessary context, specify the desired format (including HTML/Markdown tags if needed), and make it more specific. Here's the user's prompt:
