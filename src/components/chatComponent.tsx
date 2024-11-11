@@ -1,37 +1,41 @@
-'use client';
+"use client";
 
-import { useState, KeyboardEvent, useRef, useEffect } from 'react';
-import { Send, Trash2, X, Loader2, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import React from 'react';
-import Markdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { ModelLoadingProgress, startWebLLM } from '@/lib/webllm';
-import { MLCEngine } from '@mlc-ai/web-llm';
+import { useState, KeyboardEvent, useRef, useEffect } from "react";
+import { Send, Trash2, X, Loader2, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import React from "react";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { ModelLoadingProgress, startWebLLM } from "@/lib/webllm";
+import { MLCEngine } from "@mlc-ai/web-llm";
 
 interface ChatMessage {
   content: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
 }
 
 interface ChatConfig {
-  mode: 'api' | 'webllm';
+  mode: "api" | "webllm";
   model?: string; // for WebLLM
 }
 
 interface LoadingState {
-  status: 'downloading' | 'ready' | 'error';
+  status: "downloading" | "ready" | "error";
   progress: number;
+  text: string;
 }
 
 function formatConversationHistory(messages: ChatMessage[]): string {
   return (
     messages
-      .map((msg) => `${msg.role === 'user' ? 'Human' : 'Assistant'}: ${msg.content}`)
-      .join('\n\n') + '\n\nAssistant:'
+      .map(
+        (msg) =>
+          `${msg.role === "user" ? "Human" : "Assistant"}: ${msg.content}`
+      )
+      .join("\n\n") + "\n\nAssistant:"
   );
 }
 
@@ -43,10 +47,10 @@ async function getResponse(
   const conversationHistory = formatConversationHistory(messages);
 
   try {
-    const response = await fetch('/api/generate', {
-      method: 'POST',
+    const response = await fetch("/api/generate", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         prompt: conversationHistory,
@@ -55,13 +59,13 @@ async function getResponse(
     });
 
     if (!response.body) {
-      throw new Error('No response body');
+      throw new Error("No response body");
     }
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let isFirstChunk = true;
-    let accumulatedText = '';
+    let accumulatedText = "";
 
     while (true) {
       const { done, value } = await reader.read();
@@ -73,10 +77,10 @@ async function getResponse(
       isFirstChunk = false;
     }
   } catch (error: unknown) {
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('Request cancelled');
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("Request cancelled");
     }
-    console.error('Error in getResponse:', error);
+    console.error("Error in getResponse:", error);
     throw error;
   }
 }
@@ -96,22 +100,23 @@ function LinkRenderer(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const [chatConfig, setChatConfig] = useState<ChatConfig>({ mode: 'api' });
+  const [chatConfig, setChatConfig] = useState<ChatConfig>({ mode: "api" });
   const [isWebLLMReady, setIsWebLLMReady] = useState(false);
   const [engine, setEngine] = useState<MLCEngine>();
   const [loadingState, setLoadingState] = useState<LoadingState>({
-    status: 'downloading',
+    status: "downloading",
     progress: 0,
+    text: "",
   });
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -125,19 +130,20 @@ export default function ChatComponent() {
 
     const handleScroll = () => {
       const isNearBottom =
-        container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+        container.scrollHeight - container.scrollTop - container.clientHeight <
+        100;
       if (isNearBottom) {
         scrollToBottom();
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleClearChat = () => {
     setMessages([]);
-    setInput('');
+    setInput("");
   };
 
   const handleCancel = () => {
@@ -149,40 +155,42 @@ export default function ChatComponent() {
   };
 
   useEffect(() => {
-    if (chatConfig.mode === 'webllm') {
+    if (chatConfig.mode === "webllm") {
       const initWebLLM = async () => {
         try {
           setLoadingState({
-            status: 'downloading',
+            status: "downloading",
             progress: 0,
+            text: "",
           });
 
           const engine = await startWebLLM((progress) => {
             setLoadingState({
-              status: 'downloading',
+              status: "downloading",
               progress: progress.progress,
+              text: progress.text,
             });
           });
 
           setIsWebLLMReady(true);
           setEngine(engine);
           setLoadingState({
-            status: 'ready',
+            status: "ready",
             progress: 100,
-            // text: 'Model ready!',
+            text: "Model ready!",
           });
 
           // Hide the progress after 2 seconds when complete
           setTimeout(() => {
-            setLoadingState((prev) => ({ ...prev, status: 'ready', text: '' }));
+            setLoadingState((prev) => ({ ...prev, status: "ready", text: "" }));
           }, 2000);
         } catch (error) {
-          console.error('Failed to initialize WebLLM:', error);
-          setChatConfig({ mode: 'api' });
+          console.error("Failed to initialize WebLLM:", error);
+          setChatConfig({ mode: "api" });
           setLoadingState({
-            status: 'error',
+            status: "error",
             progress: 0,
-            // text: 'Failed to load model',
+            text: "Failed to load model",
           });
         }
       };
@@ -195,17 +203,17 @@ export default function ChatComponent() {
     if (!trimmedInput || isLoading) return;
 
     setIsLoading(true);
-    const userMessage: ChatMessage = { content: trimmedInput, role: 'user' };
+    const userMessage: ChatMessage = { content: trimmedInput, role: "user" };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
-    setInput('');
+    setInput("");
 
     abortControllerRef.current = new AbortController();
 
     try {
-      setMessages((msgs) => [...msgs, { content: '', role: 'assistant' }]);
+      setMessages((msgs) => [...msgs, { content: "", role: "assistant" }]);
 
-      if (chatConfig.mode === 'webllm' && engine) {
+      if (chatConfig.mode === "webllm" && engine) {
         // WebLLM mode
         const response = await engine.chat.completions.create({
           messages: updatedMessages,
@@ -213,10 +221,10 @@ export default function ChatComponent() {
         });
 
         let isFirstChunk = true;
-        let accumulatedText = '';
+        let accumulatedText = "";
 
         for await (const chunk of response) {
-          const text = chunk.choices[0]?.delta?.content || '';
+          const text = chunk.choices[0]?.delta?.content || "";
           accumulatedText += text;
 
           setMessages((prev) => {
@@ -224,7 +232,7 @@ export default function ChatComponent() {
             if (!isFirstChunk && updatedMessages.length > 0) {
               updatedMessages[updatedMessages.length - 1] = {
                 content: accumulatedText,
-                role: 'assistant',
+                role: "assistant",
               };
             }
             return updatedMessages;
@@ -241,7 +249,7 @@ export default function ChatComponent() {
               if (!isFirstChunk && updatedMessages.length > 0) {
                 updatedMessages[updatedMessages.length - 1] = {
                   content: newText,
-                  role: 'assistant',
+                  role: "assistant",
                 };
               }
               return updatedMessages;
@@ -251,15 +259,15 @@ export default function ChatComponent() {
         );
       }
     } catch (error) {
-      console.error('Error getting AI response:', error);
-      if (error instanceof Error && error.message === 'Request cancelled') {
+      console.error("Error getting AI response:", error);
+      if (error instanceof Error && error.message === "Request cancelled") {
         setMessages((prev) => prev.slice(0, -1)); // Remove the last empty message
       } else {
         setMessages((prev) => [
           ...prev,
           {
-            content: 'Sorry, there was an error processing your request.',
-            role: 'assistant',
+            content: "Sorry, there was an error processing your request.",
+            role: "assistant",
           },
         ]);
       }
@@ -270,7 +278,7 @@ export default function ChatComponent() {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
@@ -281,47 +289,63 @@ export default function ChatComponent() {
       <div className="fixed top-0 left-0 right-0 bg-background border-b border-border z-10">
         <div className="max-w-4xl mx-auto p-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-primary">AI Chat Assistant</h1>
+            <h1 className="text-2xl font-bold text-primary">
+              AI Chat Assistant
+            </h1>
             <select
               value={chatConfig.mode}
-              onChange={(e) => setChatConfig({ mode: e.target.value as 'api' | 'webllm' })}
+              onChange={(e) =>
+                setChatConfig({ mode: e.target.value as "api" | "webllm" })
+              }
               className="border rounded px-2 py-1"
             >
               <option value="api">API Mode</option>
               <option value="webllm">WebLLM Mode</option>
             </select>
-            {chatConfig.mode === 'webllm' && loadingState.progress && (
-              <div className="fixed top-20 right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+            {chatConfig.mode === "webllm" && loadingState.progress && (
+              <div className="fixed  right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300 top-[30%]">
                 <div
                   className={`
-                  flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg
+                  flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg 
                   ${
-                    loadingState.status === 'downloading'
-                      ? 'bg-blue-500/10 border border-blue-500/20'
-                      : ''
+                    loadingState.status === "downloading"
+                      ? "bg-blue-500/10 border border-blue-500/20"
+                      : ""
                   }
                   ${
-                    loadingState.status === 'ready'
-                      ? 'bg-green-500/10 border border-green-500/20'
-                      : ''
+                    loadingState.status === "ready"
+                      ? "bg-green-500/10 border border-green-500/20"
+                      : ""
                   }
-                  ${loadingState.status === 'error' ? 'bg-red-500/10 border border-red-500/20' : ''}
+                  ${
+                    loadingState.status === "error"
+                      ? "bg-red-500/10 border border-red-500/20"
+                      : ""
+                  }
                 `}
                 >
                   <div className="flex flex-col gap-1.5 min-w-[200px]">
                     <div className="flex justify-between items-center">
                       <span
                         className={`text-sm font-medium
-                        ${loadingState.status === 'downloading' ? 'text-blue-500' : ''}
-                        ${loadingState.status === 'ready' ? 'text-green-500' : ''}
-                        ${loadingState.status === 'error' ? 'text-red-500' : ''}
+                        ${
+                          loadingState.status === "downloading"
+                            ? "text-blue-500"
+                            : ""
+                        }
+                        ${
+                          loadingState.status === "ready"
+                            ? "text-green-500"
+                            : ""
+                        }
+                        ${loadingState.status === "error" ? "text-red-500" : ""}
                       `}
                       >
-                        {loadingState.status === 'downloading'
-                          ? 'Downloading Model'
-                          : loadingState.status === 'ready'
-                          ? 'Model Ready'
-                          : 'Error'}
+                        {loadingState.status === "downloading"
+                          ? "Downloading Model"
+                          : loadingState.status === "ready"
+                          ? "Model Ready"
+                          : "Error"}
                       </span>
                       <span className="text-xs text-muted-foreground ml-2">
                         {Math.round(loadingState.progress)}%
@@ -330,16 +354,26 @@ export default function ChatComponent() {
                     <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-300 ease-in-out
-                          ${loadingState.status === 'downloading' ? 'bg-blue-500' : ''}
-                          ${loadingState.status === 'ready' ? 'bg-green-500' : ''}
-                          ${loadingState.status === 'error' ? 'bg-red-500' : ''}
+                          ${
+                            loadingState.status === "downloading"
+                              ? "bg-blue-500"
+                              : ""
+                          }
+                          ${
+                            loadingState.status === "ready"
+                              ? "bg-green-500"
+                              : ""
+                          }
+                          ${loadingState.status === "error" ? "bg-red-500" : ""}
                         `}
                         style={{ width: `${loadingState.progress}%` }}
                       />
                     </div>
-                    {/* <span className="text-sm text-muted-foreground">{loadingState.text}</span> */}
+                    <span className="text-sm text-muted-foreground">
+                      {loadingState.text}
+                    </span>
                   </div>
-                  {loadingState.status === 'ready' && (
+                  {loadingState.status === "ready" && (
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   )}
                 </div>
@@ -371,23 +405,27 @@ export default function ChatComponent() {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`group flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`group flex ${
+              message.role === "user" ? "justify-end" : "justify-start"
+            }`}
           >
             <div
               className={`max-w-[85%] p-4 rounded-2xl shadow-sm transition-all overflow-auto
                 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground ml-4'
-                    : 'bg-secondary hover:bg-secondary/90 text-secondary-foreground mr-4'
+                  message.role === "user"
+                    ? "bg-primary text-primary-foreground ml-4"
+                    : "bg-secondary hover:bg-secondary/90 text-secondary-foreground mr-4"
                 }
               `}
             >
               <Markdown
-                className={`prose ${message.role === 'user' ? 'dark:prose-invert' : ''} max-w-none
+                className={`prose ${
+                  message.role === "user" ? "dark:prose-invert" : ""
+                } max-w-none
                   ${
-                    message.role === 'user'
-                      ? 'text-primary-foreground'
-                      : 'text-secondary-foreground'
+                    message.role === "user"
+                      ? "text-primary-foreground"
+                      : "text-secondary-foreground"
                   }
                 `}
                 rehypePlugins={[rehypeRaw]}
@@ -395,7 +433,7 @@ export default function ChatComponent() {
                 components={{
                   a: LinkRenderer,
                   code({ className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
+                    const match = /language-(\w+)/.exec(className || "");
                     return match ? (
                       <div className="relative group">
                         <SyntaxHighlighter
@@ -403,11 +441,14 @@ export default function ChatComponent() {
                           showLineNumbers
                           className="!mt-2 !mb-2 rounded-lg"
                         >
-                          {String(children).replace(/\n$/, '')}
+                          {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
                       </div>
                     ) : (
-                      <code {...props} className={`${className} bg-opacity-75 rounded-md px-1`}>
+                      <code
+                        {...props}
+                        className={`${className} bg-opacity-75 rounded-md px-1`}
+                      >
                         {children}
                       </code>
                     );
@@ -426,15 +467,15 @@ export default function ChatComponent() {
               <div className="flex space-x-1">
                 <div
                   className="w-2 h-2 bg-primary rounded-full animate-bounce"
-                  style={{ animationDelay: '0ms' }}
+                  style={{ animationDelay: "0ms" }}
                 />
                 <div
                   className="w-2 h-2 bg-primary rounded-full animate-bounce"
-                  style={{ animationDelay: '150ms' }}
+                  style={{ animationDelay: "150ms" }}
                 />
                 <div
                   className="w-2 h-2 bg-primary rounded-full animate-bounce"
-                  style={{ animationDelay: '300ms' }}
+                  style={{ animationDelay: "300ms" }}
                 />
               </div>
             </div>
@@ -466,7 +507,11 @@ export default function ChatComponent() {
                   <X className="h-4 w-4" />
                 </Button>
               ) : (
-                <Button onClick={handleSend} className="h-8 w-8 p-0" disabled={!input.trim()}>
+                <Button
+                  onClick={handleSend}
+                  className="h-8 w-8 p-0"
+                  disabled={!input.trim()}
+                >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
