@@ -113,6 +113,26 @@ export default function ChatComponent() {
     progress: 0,
     text: "",
   });
+  const [selectedModel, setSelectedModel] = useState<string>(
+    "Phi-3.5-mini-instruct-q4f16_1-MLC"
+  ); // Default model
+  const modelOptions = [
+    {
+      value: "TinyLlama-1.1B-Chat-v0.4-q4f16_1-MLC",
+      label: "Tiny Llama (Small)",
+      size: "small",
+    },
+    {
+      value: "Llama-3.1-8B-Instruct-q4f32_1-MLC",
+      label: "Llama 3.1 (Normal)",
+      size: "normal",
+    },
+    {
+      value: "Phi-3.5-mini-instruct-q4f16_1-MLC",
+      label: "Phi 3.5 Mini (Large)",
+      size: "large",
+    },
+  ];
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -164,7 +184,7 @@ export default function ChatComponent() {
             text: "",
           });
 
-          const engine = await startWebLLM((progress) => {
+          const engine = await startWebLLM(selectedModel, (progress) => {
             setLoadingState({
               status: "downloading",
               progress: progress.progress,
@@ -196,7 +216,7 @@ export default function ChatComponent() {
       };
       initWebLLM();
     }
-  }, [chatConfig.mode]);
+  }, [chatConfig.mode, selectedModel]);
 
   const handleSend = async () => {
     const trimmedInput = input.trim();
@@ -288,7 +308,7 @@ export default function ChatComponent() {
     <div className="flex flex-col h-screen max-w-4xl mx-auto bg-background">
       <div className="fixed top-0 left-0 right-0 bg-background border-b border-border z-10">
         <div className="max-w-4xl mx-auto p-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 overflow-x-auto">
             <h1 className="text-2xl font-bold text-primary">
               AI Chat Assistant
             </h1>
@@ -377,6 +397,43 @@ export default function ChatComponent() {
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   )}
                 </div>
+              </div>
+            )}
+            {chatConfig.mode === "webllm" && (
+              <div className="flex items-center gap-2">
+                <select
+                  value={selectedModel}
+                  onChange={(e) => {
+                    setSelectedModel(e.target.value);
+                    startWebLLM(e.target.value); // Call startWebLLM with the selected model
+                  }}
+                  className="border rounded px-2 py-1"
+                >
+                  {modelOptions.map((model) => (
+                    <option key={model.value} value={model.value}>
+                      {model.label}
+                    </option>
+                  ))}
+                </select>
+                <span
+                  className={`text-sm font-medium px-2 py-1 rounded-full ${
+                    modelOptions.find((m) => m.value === selectedModel)
+                      ?.size === "large"
+                      ? "bg-red-500 text-white"
+                      : modelOptions.find((m) => m.value === selectedModel)
+                          ?.size === "normal"
+                      ? "bg-yellow-500 text-white"
+                      : "bg-green-500 text-white"
+                  }`}
+                >
+                  {modelOptions.find((m) => m.value === selectedModel)?.size ===
+                  "large"
+                    ? "Large Model"
+                    : modelOptions.find((m) => m.value === selectedModel)
+                        ?.size === "normal"
+                    ? "Normal Model"
+                    : "Small Model"}
+                </span>
               </div>
             )}
           </div>

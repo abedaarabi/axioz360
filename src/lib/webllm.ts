@@ -10,6 +10,7 @@ export interface ModelLoadingProgress {
 }
 
 export async function startWebLLM(
+  selectedModel: string,
   onProgress?: (progress: ModelLoadingProgress) => void
 ) {
   const initProgressCallback = (initProgress: webllm.InitProgressReport) => {
@@ -23,10 +24,6 @@ export async function startWebLLM(
       });
     }
   };
-
-  // const selectedModel = "TinyLlama-1.1B-Chat-v0.4-q4f16_1-MLC";
-  // const selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-MLC";
-  const selectedModel = "Phi-3.5-mini-instruct-q4f16_1-MLC";
 
   const engine = await CreateMLCEngine(selectedModel, { initProgressCallback });
 
